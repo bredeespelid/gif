@@ -22,7 +22,7 @@
   p { margin: 0; color: var(--muted); }
   .stage { border: 1px solid var(--line); border-radius: 10px; padding: 24px;
     display: grid; place-items: center; }
-  .stage img { display: block; width: 463px; max-width: 100%; height: auto; }
+  .stage img { display: block; width: 480px; max-width: 100%; height: auto; }
   .stage.chk { background: repeating-conic-gradient(var(--chk-a) 0 25%, var(--chk-b) 0 50%) 0 0 / 20px 20px; }
   .stage.dark { background: #1b1a22; }
   .stage.light { background: #fafafa; }
@@ -36,18 +36,27 @@
 <main>
   <h1>Clean GIF uten bakgrunn</h1>
   <p>Bytt bakgrunn for å se at figuren er gjennomsiktig rundt kantene.</p>
-  <div class="stage chk" id="stage"><img src="clean.gif" alt="Animert figur uten bakgrunn"></div>
-  <div class="bar" role="group" aria-label="Bakgrunn">
+  <div class="bar" role="group" aria-label="Format">
+    <button id="fmt-webp" data-fmt="clean.webp" aria-pressed="true">WebP (myke kanter)</button>
+    <button id="fmt-gif" data-fmt="clean.gif" aria-pressed="false">GIF</button>
+  </div>
+  <div class="stage chk" id="stage"><img id="anim" src="clean.webp" alt="Animert figur uten bakgrunn"></div>
+  <div class="bar" role="group" aria-label="Bakgrunn" id="bgbar">
     <button id="bg-chk" data-bg="chk" aria-pressed="true">Rutenett</button>
     <button id="bg-dark" data-bg="dark" aria-pressed="false">Mørk</button>
     <button id="bg-light" data-bg="light" aria-pressed="false">Lys</button>
   </div>
-  <div class="meta">463 × 421 px · 72 rammer · 70 ms per ramme · ca. 5 s per runde</div>
+  <div class="meta">480 × 469 px · 72 rammer · 70 ms per ramme · ca. 5 s per runde</div>
 </main>
 <script>
   const stage = document.getElementById('stage');
-  document.querySelectorAll('.bar button').forEach(b => b.addEventListener('click', () => {
+  const anim = document.getElementById('anim');
+  document.querySelectorAll('[data-bg]').forEach(b => b.addEventListener('click', () => {
     stage.className = 'stage ' + b.dataset.bg;
-    document.querySelectorAll('.bar button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    document.querySelectorAll('[data-bg]').forEach(x => x.setAttribute('aria-pressed', x === b));
+  }));
+  document.querySelectorAll('[data-fmt]').forEach(b => b.addEventListener('click', () => {
+    anim.src = b.dataset.fmt;
+    document.querySelectorAll('[data-fmt]').forEach(x => x.setAttribute('aria-pressed', x === b));
   }));
 </script>
