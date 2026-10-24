@@ -1,0 +1,53 @@
+<title>Clean GIF Preview</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  /* Layout: one centered stage with the GIF, background switcher below */
+  :root {
+    --bg: #eeedf3; --fg: #1d1b26; --muted: #615e70; --line: #d3d0dd;
+    --accent: #6b4fd8; --chk-a: #ffffff; --chk-b: #d9d7e2;
+    --font: "IBM Plex Sans", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg: #15141c; --fg: #ecebf2; --muted: #a09db0; --line: #2e2c3a;
+    --accent: #a993ff; --chk-a: #2a2836; --chk-b: #1f1d29; color-scheme: dark } }
+  :root[data-theme="dark"] {
+    --bg: #15141c; --fg: #ecebf2; --muted: #a09db0; --line: #2e2c3a;
+    --accent: #a993ff; --chk-a: #2a2836; --chk-b: #1f1d29; color-scheme: dark }
+  body { background: var(--bg); color: var(--fg); font-family: var(--font);
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px; }
+  main { max-width: 560px; margin: 0 auto; display: grid; gap: 16px; }
+  h1 { font-size: 1.25rem; margin: 0; text-wrap: balance; }
+  p { margin: 0; color: var(--muted); }
+  .stage { border: 1px solid var(--line); border-radius: 10px; padding: 24px;
+    display: grid; place-items: center; }
+  .stage img { display: block; width: 463px; max-width: 100%; height: auto; }
+  .stage.chk { background: repeating-conic-gradient(var(--chk-a) 0 25%, var(--chk-b) 0 50%) 0 0 / 20px 20px; }
+  .stage.dark { background: #1b1a22; }
+  .stage.light { background: #fafafa; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; }
+  .bar button { font: inherit; padding: 6px 14px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--line); background: transparent; color: var(--fg); }
+  .bar button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+  .bar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .meta { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<main>
+  <h1>Clean GIF uten bakgrunn</h1>
+  <p>Bytt bakgrunn for å se at figuren er gjennomsiktig rundt kantene.</p>
+  <div class="stage chk" id="stage"><img src="clean.gif" alt="Animert figur uten bakgrunn"></div>
+  <div class="bar" role="group" aria-label="Bakgrunn">
+    <button id="bg-chk" data-bg="chk" aria-pressed="true">Rutenett</button>
+    <button id="bg-dark" data-bg="dark" aria-pressed="false">Mørk</button>
+    <button id="bg-light" data-bg="light" aria-pressed="false">Lys</button>
+  </div>
+  <div class="meta">463 × 421 px · 72 rammer · 70 ms per ramme · ca. 5 s per runde</div>
+</main>
+<script>
+  const stage = document.getElementById('stage');
+  document.querySelectorAll('.bar button').forEach(b => b.addEventListener('click', () => {
+    stage.className = 'stage ' + b.dataset.bg;
+    document.querySelectorAll('.bar button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  }));
+</script>
